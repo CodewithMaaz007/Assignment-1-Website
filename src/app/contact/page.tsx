@@ -18,7 +18,7 @@ export default function ContactPage() {
         {/* Contact Information Section */}
         <div className="bg-white shadow-md p-6 rounded-lg border border-gray-200 max-w-4xl w-full">
           <p className="text-lg font-semibold text-center mb-4">
-            We'd love to hear from you! Please fill out the form or reach out through the contact details below.
+            We would love to hear from you! Please fill out the form or reach out through the contact details below.
           </p>
 
           <form className="space-y-6">

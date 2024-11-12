@@ -1,101 +1,93 @@
-import Image from "next/image";
+// src/app/HomePage.tsx
 
-export default function Home() {
+'use client'; // Ensures that this is a client-side component
+
+import { useState, useEffect } from 'react';
+import Navbar from "@/components/navbar"; // Import the navbar from the component
+import LoadingPage from './loadingpage'; // Import the loading page 
+import ErrorBoundary from './errorboundary'; // Import the ErrorBoundary component
+
+export default function HomePage() {
+  // State to handle dark mode
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  // State to handle loading effect
+  const [isLoading, setIsLoading] = useState(true);
+  // State to simulate error
+  const [hasError, setHasError] = useState(false);
+
+  // Effect to simulate loading for a few seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false); // Hide the loading spinner after 3 seconds
+    }, 5000);
+
+    // Clean up the timers when the component is unmounted
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+
+  // Function to toggle dark mode
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
+  // Function to simulate error when clicked
+  const triggerError = () => {
+    setHasError(true);
+  };
+
+  // If still loading, show the LoadingPage component
+  if (isLoading) {
+    return <LoadingPage />;
+  }
+
+  // Simulate an error when `hasError` is true
+  if (hasError) {
+    throw new Error('Simulated error triggered by the button clicked!');
+  }
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <ErrorBoundary>
+      <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-white text-black'} transition-all duration-300`}>
+        {/* Navbar */}
+        <Navbar />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+        {/* Main Content */}
+        <div className="pt-10 px-4">
+          <header className="text-center py-8">
+            <h1 className="bg-gradient-to-r from-purple-600 via-blue-400 to-purple-600 text-transparent bg-clip-text border-4 border-yellow-400 px-6 py-3 font-extrabold text-4xl sm:text-5xl md:text-6xl uppercase tracking-wider hover:scale-100 transform transition-all duration-300 ease-in-out hover:text-green-400">
+              Welcome to the Home Page
+            </h1>
+            <hr className="my-4 border-t-2 border-gray-300" />
+          </header>
+
+          {/* Button to toggle Dark Mode */}
+          <div className="text-center mb-6">
+            <button
+              onClick={toggleDarkMode}
+              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300"
+            >
+              Toggle {isDarkMode ? 'Light' : 'Dark'} Mode
+            </button>
+          </div>
+
+          {/* Button to trigger error */}
+          <div className="text-center mb-6">
+            <button
+              onClick={triggerError}
+              className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-300"
+            >
+              Simulate Error
+            </button>
+          </div>
+
+          {/* Footer */}
+          <footer className="text-center mt-12 text-sm text-gray-500">
+            <p>&copy; 2024 MyWebsite. All rights reserved.</p>
+          </footer>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </div>
+    </ErrorBoundary>
   );
 }
